@@ -1,13 +1,13 @@
 package qqq.qqq.domain.usecase
 
-import qqq.qqq.domain.modal.UserData
+import qqq.qqq.domain.models.UserData
 import qqq.qqq.domain.repository.UserRepository
 
 class SaveDataUserUseCase(private val userRepository: UserRepository) {
 
     fun execute(userData: UserData): Boolean {
-        val oldUserName = userRepository.getUser()
-        if (oldUserName.firstName == userData.firstName) {
+
+        if (userData.firstName.isEmpty()) {
             return false
         }
 

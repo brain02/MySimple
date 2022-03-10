@@ -1,6 +1,6 @@
 package qqq.qqq.domain.repository
 
-import qqq.qqq.domain.modal.UserData
+import qqq.qqq.domain.models.UserData
 
 
 interface UserRepository {

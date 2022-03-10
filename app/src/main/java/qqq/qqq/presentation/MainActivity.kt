@@ -3,9 +3,9 @@ package qqq.qqq.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import qqq.qqq.data.repository.UserRepositoryImpl
-import qqq.qqq.data.storage.SharedPrefUserStorage
+import qqq.qqq.data.storage.sharedpref.SharedPrefUserStorage
 import qqq.qqq.databinding.ActivityMainBinding
-import qqq.qqq.domain.modal.UserData
+import qqq.qqq.domain.models.UserData
 import qqq.qqq.domain.usecase.GetDataUserUseCase
 import qqq.qqq.domain.usecase.SaveDataUserUseCase
 

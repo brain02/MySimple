@@ -1,3 +1,3 @@
-package qqq.qqq.data.storage
+package qqq.qqq.data.storage.models
 
 class User(val firstName: String, val lastName: String)

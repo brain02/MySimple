@@ -1,5 +1,7 @@
 package qqq.qqq.data.storage
 
+import qqq.qqq.data.storage.models.User
+
 
 interface UserStorage {
 
