@@ -2,6 +2,7 @@ package qqq.qqq.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import qqq.qqq.data.repository.UserRepositoryImpl
 import qqq.qqq.data.storage.sharedpref.SharedPrefUserStorage
 import qqq.qqq.databinding.ActivityMainBinding
@@ -12,31 +13,31 @@ import qqq.qqq.domain.usecase.SaveDataUserUseCase
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var vm: MainViewModel
 
-    private val sharedPrefUserStorage by lazy { SharedPrefUserStorage(context = applicationContext) }
-    private val userRepositoryImpl by lazy { UserRepositoryImpl(userStorage = sharedPrefUserStorage) }
-    private val getDataUserUseCase by lazy { GetDataUserUseCase(userRepository = userRepositoryImpl) }
-    private val saveDataUserUseCase by lazy { SaveDataUserUseCase(userRepository = userRepositoryImpl) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        vm = ViewModelProvider(this, MainViewModelFactory(this))
+            .get(MainViewModel::class.java)
     }
 
     override fun onResume() {
         super.onResume()
 
+        vm.resultLive.observe(this, {
+            binding.tvData.text = it
+        })
+
         binding.btnGetData.setOnClickListener {
-            val user = getDataUserUseCase.execute()
-            binding.tvData.text = "${user.firstName} ${user.lastName}"
+            vm.get()
         }
 
         binding.btnSetData.setOnClickListener {
             val inputName = binding.editInputData.text.toString()
-            val saveUser =
-                saveDataUserUseCase.execute(UserData(firstName = inputName, lastName = "Коваленко"))
-            binding.tvData.text = "$saveUser"
+            vm.save(text = inputName)
         }
     }
 }
