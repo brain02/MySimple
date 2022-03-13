@@ -1,18 +1,18 @@
 package qqq.qqq.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import qqq.qqq.data.repository.UserRepositoryImpl
-import qqq.qqq.data.storage.sharedpref.SharedPrefUserStorage
+import qqq.qqq.app.App
 import qqq.qqq.databinding.ActivityMainBinding
-import qqq.qqq.domain.models.UserData
-import qqq.qqq.domain.usecase.GetDataUserUseCase
-import qqq.qqq.domain.usecase.SaveDataUserUseCase
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    @Inject
+    lateinit var vmFactory: MainViewModelFactory
     private lateinit var vm: MainViewModel
 
 
@@ -20,7 +20,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        vm = ViewModelProvider(this, MainViewModelFactory(this))
+
+        (applicationContext as App).appCompanent.inject(this)
+
+        vm = ViewModelProvider(this, vmFactory)
             .get(MainViewModel::class.java)
     }
 

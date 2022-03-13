@@ -9,12 +9,11 @@ import qqq.qqq.domain.usecase.GetDataUserUseCase
 import qqq.qqq.domain.usecase.SaveDataUserUseCase
 
 
-class MainViewModelFactory(context: Context) : ViewModelProvider.Factory {
+class MainViewModelFactory(
+    val getDataUserUseCase: GetDataUserUseCase,
+    val saveDataUserUseCase: SaveDataUserUseCase
+) : ViewModelProvider.Factory {
 
-    private val sharedPrefUserStorage by lazy { SharedPrefUserStorage(context = context) }
-    private val userRepositoryImpl by lazy { UserRepositoryImpl(userStorage = sharedPrefUserStorage) }
-    private val getDataUserUseCase by lazy { GetDataUserUseCase(userRepository = userRepositoryImpl) }
-    private val saveDataUserUseCase by lazy { SaveDataUserUseCase(userRepository = userRepositoryImpl) }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(
