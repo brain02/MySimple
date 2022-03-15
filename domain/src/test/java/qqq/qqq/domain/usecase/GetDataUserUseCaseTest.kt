@@ -7,18 +7,6 @@ import org.mockito.kotlin.mock
 import qqq.qqq.domain.models.UserData
 import qqq.qqq.domain.repository.UserRepository
 
-
-//class TestRepository : UserRepository {
-//    override fun getUser(): UserData {
-//        return UserData(firstName = "Ivan", lastName = "Kovalenko")
-//    }
-//
-//    override fun saveUser(userData: UserData): Boolean {
-//        TODO("Not yet implemented")
-//    }
-//
-//}
-
 class GetDataUserUseCaseTest {
 
     val userRepository = mock<UserRepository>()

@@ -7,8 +7,10 @@ class SaveDataUserUseCase(private val userRepository: UserRepository) {
 
     fun execute(userData: UserData): Boolean {
 
-        if (userData.firstName.isEmpty()) {
-            return false
+        val oldUserData = userRepository.getUser()
+
+        if (oldUserData.firstName == userData.firstName) {
+            return true
         }
 
         val result = userRepository.saveUser(userData = userData)
