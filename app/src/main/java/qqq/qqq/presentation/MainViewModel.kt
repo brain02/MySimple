@@ -3,6 +3,8 @@ package qqq.qqq.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import qqq.qqq.app.App
+import qqq.qqq.data.storage.room.UserNameEntity
 import qqq.qqq.domain.models.UserData
 import qqq.qqq.domain.usecase.GetDataUserUseCase
 import qqq.qqq.domain.usecase.SaveDataUserUseCase
@@ -14,10 +16,12 @@ class MainViewModel(
 
     private val resultLiveMutable = MutableLiveData<String>()
     val resultLive: LiveData<String> = resultLiveMutable
+    private val queryDB = App.getDatabase()?.dao()
 
     fun save(text: String) {
         val result = saveDataUserUseCase.execute(UserData(firstName = text, lastName = "Коваленко"))
         resultLiveMutable.value = result.toString()
+        queryDB?.saveUserDB(UserNameEntity(firstName =  text, lastName = "Abramov"))
     }
 
     fun get() {
