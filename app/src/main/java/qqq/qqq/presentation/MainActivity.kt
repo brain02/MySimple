@@ -30,7 +30,13 @@ class MainActivity : AppCompatActivity() {
 //        })
 
 //        LiveStateFlow
-        vm.resultStateFlow.onEach {
+//        vm.resultStateFlow.onEach {
+//            binding.tvData.text = it
+//        }.launchWhenStarted(lifecycleScope)
+
+
+//        LiveSharedFlow
+        vm.resultSharedFlow.onEach {
             binding.tvData.text = it
         }.launchWhenStarted(lifecycleScope)
 
