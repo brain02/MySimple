@@ -1,14 +1,12 @@
 package qqq.qqq.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import qqq.qqq.data.repository.UserRepositoryImpl
-import qqq.qqq.data.storage.sharedpref.SharedPrefUserStorage
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.onEach
 import qqq.qqq.databinding.ActivityMainBinding
-import qqq.qqq.domain.models.UserData
-import qqq.qqq.domain.usecase.GetDataUserUseCase
-import qqq.qqq.domain.usecase.SaveDataUserUseCase
+import qqq.qqq.launchWhenStarted
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,10 +24,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+// LiveData
+//        vm.resultLive.observe(this, {
+//            binding.tvData.text = it
+//        })
 
-        vm.resultLive.observe(this, {
+//        LiveStateFlow
+        vm.resultStateFlow.onEach {
             binding.tvData.text = it
-        })
+        }.launchWhenStarted(lifecycleScope)
 
         binding.btnGetData.setOnClickListener {
             vm.get()
