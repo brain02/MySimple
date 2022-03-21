@@ -1,10 +1,13 @@
 package qqq.qqq.presentation
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.onEach
+import qqq.qqq.adapter.MyRecycleAdapter
 import qqq.qqq.databinding.ActivityMainBinding
 import qqq.qqq.launchWhenStarted
 
@@ -12,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var vm: MainViewModel
+    var arrayData = arrayListOf("lol", "fact", "ivan", "best", "check", "adapter")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,18 +28,26 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-// LiveData
+
+        /**RecycleView*/
+        val adapter = MyRecycleAdapter()
+        adapter.setData(arrayData = arrayData)
+        with(binding) {
+            recycleView.layoutManager = LinearLayoutManager(applicationContext)
+            recycleView.adapter = adapter
+        }
+
+        /**LiveData*/
 //        vm.resultLive.observe(this, {
 //            binding.tvData.text = it
 //        })
 
-//        LiveStateFlow
+        /**LiveStateFlow*/
 //        vm.resultStateFlow.onEach {
 //            binding.tvData.text = it
 //        }.launchWhenStarted(lifecycleScope)
 
-
-//        LiveSharedFlow
+        /**LiveSharedFlow*/
         vm.resultSharedFlow.onEach {
             binding.tvData.text = it
         }.launchWhenStarted(lifecycleScope)
@@ -47,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         binding.btnSetData.setOnClickListener {
             val inputName = binding.editInputData.text.toString()
             vm.save(text = inputName)
+            arrayData.add(inputName)
+            binding.recycleView.adapter?.notifyDataSetChanged()
         }
     }
 }

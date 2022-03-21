@@ -18,6 +18,7 @@ class MainViewModel(
     private val saveDataUserUseCase: SaveDataUserUseCase
 ) : ViewModel() {
 
+    /**SharedFlow*/
     private val _resultSharedFlow =
         MutableSharedFlow<String>(
             replay = 1,
@@ -26,24 +27,27 @@ class MainViewModel(
         )
     val resultSharedFlow: SharedFlow<String> = _resultSharedFlow.asSharedFlow()
 
+    /**StateFlow*/
     private val _resultStateFlow = MutableStateFlow<String>("no data flow")
     val resultStateFlow: StateFlow<String> = _resultStateFlow.asStateFlow()
 
+    /**LiveData*/
     private val _resultLive = MutableLiveData<String>()
     val resultLive: LiveData<String> = _resultLive
 
+    /**DB Room*/
     private val queryDB = App.getDatabase()?.dao()
 
+    /**Функция сохранить введенные данные*/
     fun save(text: String) {
         val result = saveDataUserUseCase.execute(UserData(firstName = text, lastName = "Коваленко"))
         _resultLive.value = result.toString()
         _resultStateFlow.value = result.toString()
-
-        /**    Сохраняем в SQLite БД
-         * queryDB?.saveUserDB(UserNameEntity(firstName = text, lastName = "Abramov"))
-         */
+        _resultSharedFlow.tryEmit(result.toString())
+//        queryDB?.saveUserDB(UserNameEntity(firstName = text, lastName = "Abramov"))
     }
 
+    /**Получить сохраненные данные*/
     fun get() {
         val user = getDataUserUseCase.execute()
         _resultLive.value = "${user.firstName} ${user.lastName}"
@@ -51,6 +55,7 @@ class MainViewModel(
         _resultSharedFlow.tryEmit("${user.firstName} ${user.lastName}")
     }
 
+    /**Инициализируем корутин во ViewModel*/
     init {
         viewModelScope.launch {
             delay(1000)
