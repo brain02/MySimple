@@ -1,4 +1,4 @@
-package qqq.qqq.adapter
+package qqq.qqq.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

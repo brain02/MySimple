@@ -1,13 +1,15 @@
 package qqq.qqq.presentation
 
+import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
-import qqq.qqq.adapter.MyRecycleAdapter
+import qqq.qqq.presentation.adapter.MyRecycleAdapter
 import qqq.qqq.databinding.ActivityMainBinding
 import qqq.qqq.launchWhenStarted
 
@@ -15,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var vm: MainViewModel
-    var arrayData = arrayListOf("lol", "fact", "ivan", "best", "check", "adapter")
+    private var arrayData = arrayListOf("lol", "fact", "ivan", "best", "check", "adapter")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +63,11 @@ class MainActivity : AppCompatActivity() {
             vm.save(text = inputName)
             arrayData.add(inputName)
             binding.recycleView.adapter?.notifyDataSetChanged()
+        }
+
+        binding.btnSwapColor.setOnClickListener {
+            binding.customView.swapColor()
+            binding.customView.foregroundColor(color = Color.GRAY)
         }
     }
 }
