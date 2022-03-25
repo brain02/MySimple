@@ -2,16 +2,17 @@ package qqq.qqq.presentation
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.delay
+import io.reactivex.Observable
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.toObservable
 import kotlinx.coroutines.flow.onEach
-import qqq.qqq.presentation.adapter.MyRecycleAdapter
 import qqq.qqq.databinding.ActivityMainBinding
 import qqq.qqq.launchWhenStarted
+import qqq.qqq.presentation.adapter.MyRecycleAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,16 +40,6 @@ class MainActivity : AppCompatActivity() {
             recycleView.adapter = adapter
         }
 
-        /**LiveData*/
-//        vm.resultLive.observe(this, {
-//            binding.tvData.text = it
-//        })
-
-        /**LiveStateFlow*/
-//        vm.resultStateFlow.onEach {
-//            binding.tvData.text = it
-//        }.launchWhenStarted(lifecycleScope)
-
         /**LiveSharedFlow*/
         vm.resultSharedFlow.onEach {
             binding.tvData.text = it
@@ -69,5 +60,36 @@ class MainActivity : AppCompatActivity() {
             binding.customView.swapColor()
             binding.customView.foregroundColor(color = Color.GRAY)
         }
+
+        binding.btnRxJava.setOnClickListener {
+//            SampleRxJava(context = applicationContext).startRStream()
+            startRStream()
+        }
     }
+
+    private fun startRStream() {
+
+        val numbers = Observable.range(1, 6)
+
+        val strings = Observable.just("One", "Two", "Three","Five", "Six" )
+
+        val list = listOf("1", "2", "3", "4", "5")
+        list.toObservable()
+            .subscribeBy(
+                onNext = { println(it) },
+                onError = { it.printStackTrace() },
+                onComplete = { println("onComplete!") }
+            )
+    }
+
 }
+
+/**LiveData*/
+//        vm.resultLive.observe(this, {
+//            binding.tvData.text = it
+//        })
+
+/**LiveStateFlow*/
+//        vm.resultStateFlow.onEach {
+//            binding.tvData.text = it
+//        }.launchWhenStarted(lifecycleScope)
