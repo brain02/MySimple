@@ -1,4 +1,4 @@
-package qqq.qqq.presentation
+package qqq.qqq.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -36,7 +36,7 @@ class MainViewModel(
     val resultLive: LiveData<String> = _resultLive
 
     /**DB Room*/
-    private val queryDB = App.getDatabase()?.dao()
+//    private val queryDB = App.getDatabase()?.dao()
 
     /**Функция сохранить введенные данные*/
     fun save(text: String) {

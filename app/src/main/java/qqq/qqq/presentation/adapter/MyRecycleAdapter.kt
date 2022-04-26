@@ -22,8 +22,9 @@ class MyRecycleAdapter : RecyclerView.Adapter<MyRecycleAdapter.MyViewHolder>() {
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val itemData = arrayList[position]
+        println(position)
 
-        with(holder.binding){
+        with(holder.binding) {
             tvName.text = itemData
             btnClick.setOnClickListener {
                 Toast.makeText(context, itemData, Toast.LENGTH_LONG).show()
@@ -36,4 +37,6 @@ class MyRecycleAdapter : RecyclerView.Adapter<MyRecycleAdapter.MyViewHolder>() {
     fun setData(arrayData: ArrayList<String>) {
         this.arrayList = arrayData
     }
+
+    fun getData() = this.arrayList
 }

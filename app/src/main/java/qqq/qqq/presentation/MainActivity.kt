@@ -5,21 +5,25 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.Observable
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.toObservable
 import kotlinx.coroutines.flow.onEach
 import qqq.qqq.databinding.ActivityMainBinding
 import qqq.qqq.launchWhenStarted
+import qqq.qqq.presentation.adapter.DiffUtilCallback
 import qqq.qqq.presentation.adapter.MyRecycleAdapter
+import qqq.qqq.presentation.viewmodel.MainViewModel
+import qqq.qqq.presentation.viewmodel.MainViewModelFactory
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var vm: MainViewModel
-    private var arrayData = arrayListOf("lol", "fact", "ivan", "best", "check", "adapter")
-
+    private val adapter = MyRecycleAdapter()
+    private var arrayData: ArrayList<String> =
+        arrayListOf("lol", "fact", "ivan", "best", "check", "adapter")
+    private var arrayData2 = arrayListOf("111", "fact", "333", "best", "check", "666")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         /**RecycleView*/
-        val adapter = MyRecycleAdapter()
         adapter.setData(arrayData = arrayData)
         with(binding) {
             recycleView.layoutManager = LinearLayoutManager(applicationContext)
@@ -47,13 +49,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnGetData.setOnClickListener {
             vm.get()
+            updateRecycleView()
         }
 
         binding.btnSetData.setOnClickListener {
             val inputName = binding.editInputData.text.toString()
             vm.save(text = inputName)
-            arrayData.add(inputName)
-            binding.recycleView.adapter?.notifyDataSetChanged()
         }
 
         binding.btnSwapColor.setOnClickListener {
@@ -62,26 +63,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnRxJava.setOnClickListener {
-//            SampleRxJava(context = applicationContext).startRStream()
-            startRStream()
+            SampleRxJava(context = this).startRStream()
         }
     }
 
-    private fun startRStream() {
-
-        val numbers = Observable.range(1, 6)
-
-        val strings = Observable.just("One", "Two", "Three","Five", "Six" )
-
-        val list = listOf("1", "2", "3", "4", "5")
-        list.toObservable()
-            .subscribeBy(
-                onNext = { println(it) },
-                onError = { it.printStackTrace() },
-                onComplete = { println("onComplete!") }
-            )
+    private fun updateRecycleView(){
+        val diffUtilCallback =
+            DiffUtilCallback(oldList = adapter.getData(), newList = arrayData2)
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallback, false)
+        adapter.setData(arrayData = arrayData2)
+        diffResult.dispatchUpdatesTo(adapter)
     }
-
 }
 
 /**LiveData*/
@@ -93,3 +85,16 @@ class MainActivity : AppCompatActivity() {
 //        vm.resultStateFlow.onEach {
 //            binding.tvData.text = it
 //        }.launchWhenStarted(lifecycleScope)
+
+/**RxKotlin*/
+//    private fun startRStream() {
+//        var list = listOf("1", "2", "3", "4", "5")
+//        var sett = setOf<String>("")
+//        sett
+//        list.toObservable()
+//            .subscribeBy(
+//                onNext = { println(it) },
+//                onError = { it.printStackTrace() },
+//                onComplete = { println("onComplete!") }
+//            )
+//    }

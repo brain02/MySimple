@@ -8,6 +8,7 @@ import android.widget.Toast
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import java.util.concurrent.Executors
 
 class SampleRxJava(val context: Context) {
 
@@ -16,17 +17,21 @@ class SampleRxJava(val context: Context) {
 
 
     fun startRStream() {
-        Thread {
+        val runnable = Runnable {
             val myObservable = getObservable()
             val myObserver = getObserver()
             myObservable
                 .subscribe(myObserver)
-        }.start()
+        }
+
+        val executor = Executors.newCachedThreadPool()
+        executor.execute(runnable)
     }
 
     private fun getObserver(): Observer<String> {
         return object : Observer<String> {
             override fun onSubscribe(d: Disposable) {
+                Log.d(TAG, "onSubscribe: ${d.isDisposed}")
             }
 
             override fun onNext(s: String) {

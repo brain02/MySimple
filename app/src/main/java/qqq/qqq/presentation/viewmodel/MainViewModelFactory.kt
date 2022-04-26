@@ -1,4 +1,4 @@
-package qqq.qqq.presentation
+package qqq.qqq.presentation.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

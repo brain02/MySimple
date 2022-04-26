@@ -19,8 +19,7 @@ class App : Application() {
             applicationContext,
             AppDataBase::class.java,
             "database"
-        )
-            .allowMainThreadQueries()
+        ).allowMainThreadQueries()
             .build()
     }
 }
