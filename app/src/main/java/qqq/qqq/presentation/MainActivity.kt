@@ -1,19 +1,23 @@
 package qqq.qqq.presentation
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.onEach
+import qqq.qqq.api.MyApi
 import qqq.qqq.databinding.ActivityMainBinding
 import qqq.qqq.launchWhenStarted
 import qqq.qqq.presentation.adapter.DiffUtilCallback
 import qqq.qqq.presentation.adapter.MyRecycleAdapter
 import qqq.qqq.presentation.viewmodel.MainViewModel
 import qqq.qqq.presentation.viewmodel.MainViewModelFactory
+import qqq.qqq.presentation.viewmodel.SecondActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +39,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        startActivity(Intent(this, SecondActivity::class.java))
+        lifecycleScope.launchWhenResumed {
+            Log.e("MyApi", MyApi().getPassengersData(page = 0, size = 1).toString())
+        }
+
         /**RecycleView*/
         adapter.setData(arrayData = arrayData)
         with(binding) {
@@ -67,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateRecycleView(){
+    private fun updateRecycleView() {
         val diffUtilCallback =
             DiffUtilCallback(oldList = adapter.getData(), newList = arrayData2)
         val diffResult = DiffUtil.calculateDiff(diffUtilCallback, false)
