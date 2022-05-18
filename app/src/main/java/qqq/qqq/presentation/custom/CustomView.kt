@@ -1,6 +1,5 @@
 package qqq.qqq.presentation.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
@@ -80,11 +79,6 @@ class CustomView @JvmOverloads constructor(
         canvas?.drawColor(foregroundColor)
         canvas?.drawRect(mRectSquare, mPaintSquare)
         canvas?.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaintCircle)
-
-        canvas?.apply {
-            drawLines(floatArrayOf(150f,150f,300f,300f), mPaintCircle)
-            drawLines(floatArrayOf(300f,300f,150f,300f), mPaintCircle)
-        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
