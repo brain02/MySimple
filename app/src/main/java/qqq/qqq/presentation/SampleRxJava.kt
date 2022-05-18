@@ -7,8 +7,11 @@ import android.util.Log
 import android.widget.Toast
 import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import java.util.concurrent.Executors
+import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
+import java.util.concurrent.TimeUnit
 
 class SampleRxJava(val context: Context) {
 
@@ -17,15 +20,13 @@ class SampleRxJava(val context: Context) {
 
 
     fun startRStream() {
-        val runnable = Runnable {
-            val myObservable = getObservable()
-            val myObserver = getObserver()
-            myObservable
-                .subscribe(myObserver)
-        }
-
-        val executor = Executors.newCachedThreadPool()
-        executor.execute(runnable)
+        val myObservable = getObservable()
+        val myObserver = getObserver()
+        myObservable
+            .delay(500, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(myObserver)
     }
 
     private fun getObserver(): Observer<String> {
@@ -39,7 +40,6 @@ class SampleRxJava(val context: Context) {
                     Toast.makeText(context, s, Toast.LENGTH_SHORT).show()
                 }
                 Log.d(TAG, "onNext: $s")
-                Thread.sleep(2000)
             }
 
             override fun onError(e: Throwable) {

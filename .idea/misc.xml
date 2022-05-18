@@ -9,10 +9,11 @@
         <entry key="..\:/Projects/TRASH/MySimple/app/src/main/res/layout/custom_layout.xml" value="0.22" />
         <entry key="..\:/Projects/TRASH/MySimple/app/src/main/res/layout/item_loading_state.xml" value="0.35104166666666664" />
         <entry key="..\:/Projects/TRASH/MySimple/app/src/main/res/layout/item_passenger.xml" value="0.25" />
+        <entry key="..\:/Users/Developer/AndroidStudioProjects/MySimple/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -1,23 +1,23 @@
 package qqq.qqq.presentation
 
-import android.content.Intent
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.flow.onEach
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import qqq.qqq.api.MyApi
 import qqq.qqq.databinding.ActivityMainBinding
-import qqq.qqq.launchWhenStarted
 import qqq.qqq.presentation.adapter.DiffUtilCallback
 import qqq.qqq.presentation.adapter.MyRecycleAdapter
 import qqq.qqq.presentation.viewmodel.MainViewModel
 import qqq.qqq.presentation.viewmodel.MainViewModelFactory
-import qqq.qqq.presentation.viewmodel.SecondActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,11 +39,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        var apiService = MyApi()
 
-        startActivity(Intent(this, SecondActivity::class.java))
         lifecycleScope.launchWhenResumed {
-            Log.e("MyApi", MyApi().getPassengersData(page = 0, size = 1).toString())
+            Log.e(
+                "MyApi-launchWhenResumed",
+                apiService.getPassengersData(page = 0, size = 1).toString()
+            )
         }
+
+        apiService.getPassengersRx(page = 0, size = 1)
+            .subscribeOn(Schedulers.io())
+            .doOnNext {
+                Log.e("MyApi-Rx", it.toString())
+            }
+            .subscribe()
+
+//        startActivity(Intent(this, SecondActivity::class.java))
 
         /**RecycleView*/
         adapter.setData(arrayData = arrayData)
@@ -52,10 +64,10 @@ class MainActivity : AppCompatActivity() {
             recycleView.adapter = adapter
         }
 
-        /**LiveSharedFlow*/
-        vm.resultSharedFlow.onEach {
+        /**LiveData*/
+        vm.resultLive.observe(this) {
             binding.tvData.text = it
-        }.launchWhenStarted(lifecycleScope)
+        }
 
         binding.btnGetData.setOnClickListener {
             vm.get()
@@ -75,6 +87,10 @@ class MainActivity : AppCompatActivity() {
         binding.btnRxJava.setOnClickListener {
             SampleRxJava(context = this).startRStream()
         }
+
+        binding.FocusContainer.setOnClickListener {
+            hideKeyboard()
+        }
     }
 
     private fun updateRecycleView() {
@@ -84,7 +100,24 @@ class MainActivity : AppCompatActivity() {
         adapter.setData(arrayData = arrayData2)
         diffResult.dispatchUpdatesTo(adapter)
     }
+
 }
+
+fun MainActivity.hideKeyboard() {
+    (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).also {
+        it.hideSoftInputFromWindow(
+            currentFocus?.windowToken,
+            0
+        )
+    }
+    currentFocus?.clearFocus()
+}
+
+
+/**LiveSharedFlow*/
+//vm.resultSharedFlow.onEach {
+//    binding.tvData.text = it
+//}.launchWhenStarted(lifecycleScope)
 
 /**LiveData*/
 //        vm.resultLive.observe(this, {

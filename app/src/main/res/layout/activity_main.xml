@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".presentation.MainActivity">
+    android:layout_height="match_parent">
 
-    <qqq.qqq.presentation.custom.CustomView
-        android:id="@+id/customView"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:square_color="@color/black"
-        app:square_size="100dp"/>
-
-    <Button
-        android:id="@+id/btnSwapColor"
-        android:text="сменить цвет"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/tvData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/data"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/btnGetData"
+    <LinearLayout
+        android:id="@+id/FocusContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/get_data" />
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".presentation.MainActivity">
 
-    <EditText
-        android:id="@+id/editInputData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:hint="@string/input_data"
-        android:textSize="18sp" />
+        <qqq.qqq.presentation.custom.CustomView
+            android:id="@+id/customView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:square_color="@color/black"
+            app:square_size="100dp" />
 
-    <Button
-        android:id="@+id/btnSetData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_data" />
+        <Button
+            android:id="@+id/btnSwapColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="сменить цвет" />
 
-    <Button
-        android:id="@+id/btnRxJava"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/rx_data" />
+        <TextView
+            android:id="@+id/tvData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/data"
+            android:textSize="18sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/adapter_view"/>
-</LinearLayout>
+        <Button
+            android:id="@+id/btnGetData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/get_data" />
+
+        <EditText
+            android:id="@+id/editInputData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/input_data"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnSetData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_data" />
+
+        <Button
+            android:id="@+id/btnRxJava"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rx_data" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/adapter_view" />
+    </LinearLayout>
+</ScrollView>

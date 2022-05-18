@@ -13,6 +13,7 @@ import qqq.qqq.paging.PassengersAdapter
 import qqq.qqq.paging.PassengersLoadStateAdapter
 import qqq.qqq.paging.PassengersViewModel
 import qqq.qqq.paging.PassengersViewModelFactory
+import qqq.qqq.presentation.SampleRxJava
 
 class SecondActivity : AppCompatActivity() {
     lateinit var passengersViewModel: PassengersViewModel
@@ -28,6 +29,11 @@ class SecondActivity : AppCompatActivity() {
         setupViewModel()
         setupView()
         setupList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SampleRxJava(context = this).startRStream()
     }
 
     private fun setupViewModel() {
